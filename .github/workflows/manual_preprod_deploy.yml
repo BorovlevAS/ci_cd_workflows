@@ -44,19 +44,18 @@ jobs:
       - name: Test step
         run: |
           echo "=== TEST ==="
-          echo ${{inputs.update_simbioz}}
-          echo ${{inputs.base_update}}
-          echo ${{inputs.SERVER_ADDR}}
-          echo ${{inputs.SERVER_USER}}
-          echo ${{inputs.MAIN_PATH}}
-          echo ${{inputs.CUSTOM_PATH}}
-          echo ${{inputs.ODOO_SERVICE}}
-          echo ${{inputs.ODOO_USER}}
-          echo ${{inputs.ODOO_PASSWORD}}
-          echo ${{inputs.ODOO_URI}}
-          echo ${{inputs.ODOO_DB}}
-          echo ${{secrets.SSH_KEY}}
-          echo ${{secrets.ODOO_PASSWORD}}
+          echo "update_simbioz: ${{inputs.update_simbioz}}"
+          echo "base_update: ${{inputs.base_update}}"
+          echo "SERVER_ADDR: ${{inputs.SERVER_ADDR}}"
+          echo "SERVER_USER: ${{inputs.SERVER_USER}}"
+          echo "MAIN_PATH: ${{inputs.MAIN_PATH}}"
+          echo "CUSTOM_PATH: ${{inputs.CUSTOM_PATH}}"
+          echo "ODOO_SERVICE: ${{inputs.ODOO_SERVICE}}"
+          echo "ODOO_USER: ${{inputs.ODOO_USER}}"
+          echo "ODOO_URI: ${{inputs.ODOO_URI}}"
+          echo "ODOO_DB: ${{inputs.ODOO_DB}}"
+          echo "SSH_KEY: ${{secrets.SSH_KEY}}"
+          echo "ODOO_PASSWORD: ${{secrets.ODOO_PASSWORD}}"
 
       # - name: Create SSH
       #   run: |
