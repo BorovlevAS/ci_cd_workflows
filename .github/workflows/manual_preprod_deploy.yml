@@ -107,7 +107,7 @@ jobs:
               type cd
               cd $PTH_STRING
               RESULT=$?
-              echo "RESULT: $RESULT"
+              echo "RESULT: '$RESULT'"
               if [[ $RESULT -eq 0 ]]; then
                 echo "Current directory: $(pwd)"
               else
