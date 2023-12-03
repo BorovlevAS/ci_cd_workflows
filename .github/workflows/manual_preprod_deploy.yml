@@ -83,6 +83,7 @@ jobs:
           path: ci_cd_tools
       - name: Show files
         run: |
+          cd ci_cd_tools
           ls -la
       # - name: Create SSH
       #   run: |
