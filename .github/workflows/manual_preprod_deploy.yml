@@ -73,6 +73,7 @@ jobs:
             exit 100
           fi
           echo "=== END CHECKING INPUTS ==="
+          python3 --version
       - name: Create SSH
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
