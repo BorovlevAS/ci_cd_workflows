@@ -73,77 +73,85 @@ jobs:
             exit 100
           fi
           echo "=== END CHECKING INPUTS ==="
-          python3 --version
-      - name: Create SSH
+          echo ${{ github.ref }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          repository: BorovlevAS/ci_cd_workflows
+          ref: ${{ github.ref }}
+      - name: Show files
         run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{inputs.SERVER_ADDR}} > ~/.ssh/known_hosts
-          ssh -T ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} > /dev/null
-          echo "#!/bin/bash" > ~/update_script.sh
-      - name: Update from SIMBIOZ repo - prepare
-        if: ${{inputs.update_simbioz}}
-        run: |
-          cat <<EOF >> ~/update_script.sh
-          echo "=== UPDATING SIMBIOZ REPOs ==="
-          cd ${{inputs.MAIN_PATH}}
-          # git submodule foreach --recursive git config --local --replace-all safe.directory '*'
-          # git submodule foreach --recursive git checkout main
-          # git submodule foreach --recursive 'git add . && git diff-index --quiet HEAD || (git stash && git stash drop)'
-          # git submodule foreach --recursive git reset --hard
-          # git submodule foreach --recursive git pull
-          git submodule foreach --recursive git status
-          # sh odoo_set_icons.sh || true
-          EOF
-      - name: Update from BIKO repo - prepare
-        env:
-          PTH_STRING: ${{'$PTH'}}
-        run: |
-          cat <<EOF >> ~/update_script.sh
-          echo "=== UPDATING BIKO REPOs ==="
-          if [[ -n "${{inputs.CUSTOM_PATH}}" ]]; then
-            for PTH in ${{inputs.CUSTOM_PATH}}
-            do
-              if [[ -d "$PTH_STRING" ]]; then
-                cd "$PTH_STRING"
-                echo "Current directory: $(pwd)"
-                git checkout dev
-                if [[ $? -eq 0 ]]; then
-                  git add . && git diff-index --quiet HEAD || (git stash && git stash drop)
-                  git reset --hard
-                  git pull
-                fi
-              else
-                echo "No folder $PTH_STRING"
-              fi
-            done
-          else
-            echo "NO CUSTOM FOLDERS SPECIFIED"
-          fi
-          EOF
-      - name: Soft update (only changes)
-        if: ${{!inputs.base_update}}
-        run: |
-          cat <<EOF >> ~/update_script.sh
-          echo "=== UPDATING ODOO ==="
-          # sudo systemctl restart ${{inputs.ODOO_SERVICE}}
-          EOF
-          echo "=== START PRINT SCRIPT ==="
-          cat ~/update_script.sh
-          echo "=== END PRINT SCRIPT ==="
-          ssh -o ServerAliveInterval=600 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} bash < ~/update_script.sh
-          # python3 ci_cd_tools/scripts/odoo_update_addons.py "${{inputs.ODOO_USER}}" "${{secrets.ODOO_PASSWORD}}" "${{inputs.ODOO_URI}}" "${{inputs.ODOO_DB}}"
-      - name: Hard update (base module)
-        if: ${{inputs.base_update}}
-        run: |
-          cat <<EOF >> ~/update_script.sh
-          echo "=== UPDATING ODOO ==="
-          sudo systemctl stop ${{inputs.ODOO_SERVICE}}
-          cd ${{inputs.MAIN_PATH}}
-          source venv/bin/activate
-          python3 odoo-bin -c config/odoo-server.conf -d ${{inputs.ODOO_DB}} -u base --logfile= --log-level=error --stop-after-init
-          deactivate
-          sudo systemctl start ${{inputs.ODOO_SERVICE}}
-          sudo systemctl status ${{inputs.ODOO_SERVICE}}
-          EOF
-          ssh -o ServerAliveInterval=600 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} bash < ~/update_script.sh
+          ls -la
+      # - name: Create SSH
+      #   run: |
+      #     install -m 600 -D /dev/null ~/.ssh/id_rsa
+      #     echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
+      #     ssh-keyscan -H ${{inputs.SERVER_ADDR}} > ~/.ssh/known_hosts
+      #     ssh -T ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} > /dev/null
+      #     echo "#!/bin/bash" > ~/update_script.sh
+      # - name: Update from SIMBIOZ repo - prepare
+      #   if: ${{inputs.update_simbioz}}
+      #   run: |
+      #     cat <<EOF >> ~/update_script.sh
+      #     echo "=== UPDATING SIMBIOZ REPOs ==="
+      #     cd ${{inputs.MAIN_PATH}}
+      #     git submodule foreach --recursive git config --local --replace-all safe.directory '*'
+      #     git submodule foreach --recursive git checkout main
+      #     git submodule foreach --recursive 'git add . && git diff-index --quiet HEAD || (git stash && git stash drop)'
+      #     git submodule foreach --recursive git reset --hard
+      #     git submodule foreach --recursive git pull
+      #     sh odoo_set_icons.sh || true
+      #     EOF
+      # - name: Update from BIKO repo - prepare
+      #   env:
+      #     PTH_STRING: ${{'$PTH'}}
+      #   run: |
+      #     cat <<EOF >> ~/update_script.sh
+      #     echo "=== UPDATING BIKO REPOs ==="
+      #     if [[ -n "${{inputs.CUSTOM_PATH}}" ]]; then
+      #       for PTH in ${{inputs.CUSTOM_PATH}}
+      #       do
+      #         if [[ -d "$PTH_STRING" ]]; then
+      #           cd "$PTH_STRING"
+      #           echo "Current directory: $(pwd)"
+      #           git checkout dev
+      #           if [[ $? -eq 0 ]]; then
+      #             git add . && git diff-index --quiet HEAD || (git stash && git stash drop)
+      #             git reset --hard
+      #             git pull
+      #           fi
+      #         else
+      #           echo "No folder $PTH_STRING"
+      #         fi
+      #       done
+      #     else
+      #       echo "NO CUSTOM FOLDERS SPECIFIED"
+      #     fi
+      #     EOF
+      # - name: Soft update (only changes)
+      #   if: ${{!inputs.base_update}}
+      #   run: |
+      #     cat <<EOF >> ~/update_script.sh
+      #     echo "=== UPDATING ODOO ==="
+      #     sudo systemctl restart ${{inputs.ODOO_SERVICE}}
+      #     EOF
+      #     echo "=== START PRINT SCRIPT ==="
+      #     cat ~/update_script.sh
+      #     echo "=== END PRINT SCRIPT ==="
+      #     ssh -o ServerAliveInterval=600 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} bash < ~/update_script.sh
+      #     # python3 ci_cd_tools/scripts/odoo_update_addons.py "${{inputs.ODOO_USER}}" "${{secrets.ODOO_PASSWORD}}" "${{inputs.ODOO_URI}}" "${{inputs.ODOO_DB}}"
+      # - name: Hard update (base module)
+      #   if: ${{inputs.base_update}}
+      #   run: |
+      #     cat <<EOF >> ~/update_script.sh
+      #     echo "=== UPDATING ODOO ==="
+      #     sudo systemctl stop ${{inputs.ODOO_SERVICE}}
+      #     cd ${{inputs.MAIN_PATH}}
+      #     source venv/bin/activate
+      #     python3 odoo-bin -c config/odoo-server.conf -d ${{inputs.ODOO_DB}} -u base --logfile= --log-level=error --stop-after-init
+      #     deactivate
+      #     sudo systemctl start ${{inputs.ODOO_SERVICE}}
+      #     sudo systemctl status ${{inputs.ODOO_SERVICE}}
+      #     EOF
+      #     ssh -o ServerAliveInterval=600 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} bash < ~/update_script.sh
