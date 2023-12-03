@@ -37,33 +37,43 @@ on:
         required: true
       ODOO_PASSWORD:
         required: true
-
-env:
-  SSH_KEY: ${{secrets.PREPROD_SSH_KEY}}
-  SERVER_ADDR: ${{inputs.PREPROD_SERV_ADDR}}
-  SERVER_USER: ${{inputs.PREPROD_SERV_USER}}
-  MAIN_PATH: ${{inputs.PREPROD_MAIN_PATH}}
-  CUSTOM_PATH: ${{inputs.PREPROD_CUSTOM_PATH}}
-  ODOO_SERVICE: ${{inputs.PREPROD_ODOO_SERVICE}}
-  ODOO_USER: ${{inputs.PREPROD_ODOO_USER}}
-  ODOO_PASSWORD: ${{secrets.PREPROD_ODOO_ADMIN_PWD}}
-  ODOO_URI: ${{inputs.PREPROD_ODOO_ADDR}}
-  ODOO_DB: ${{inputs.PREPROD_DB_NAME}}
-
 jobs:
   deploy:
     runs-on: ubuntu-20.04
+    env:
+      SSH_KEY: ${{secrets.PREPROD_SSH_KEY}}
+      SERVER_ADDR: ${{inputs.PREPROD_SERV_ADDR}}
+      SERVER_USER: ${{inputs.PREPROD_SERV_USER}}
+      MAIN_PATH: ${{inputs.PREPROD_MAIN_PATH}}
+      CUSTOM_PATH: ${{inputs.PREPROD_CUSTOM_PATH}}
+      ODOO_SERVICE: ${{inputs.PREPROD_ODOO_SERVICE}}
+      ODOO_USER: ${{inputs.PREPROD_ODOO_USER}}
+      ODOO_PASSWORD: ${{secrets.PREPROD_ODOO_ADMIN_PWD}}
+      ODOO_URI: ${{inputs.PREPROD_ODOO_ADDR}}
+      ODOO_DB: ${{inputs.PREPROD_DB_NAME}}
     steps:
       - name: Print Inputs
         run: |
-          echo "SERVER_ADDR: $SERVER_ADDR"
-          echo "SERVER_USER: $SERVER_USER"
-          echo "MAIN_PATH: $MAIN_PATH"
-          echo "CUSTOM_PATH: $CUSTOM_PATH"
-          echo "ODOO_SERVICE: $ODOO_SERVICE"
-          echo "ODOO_USER: $ODOO_USER"
-          echo "ODOO_URI: $ODOO_URI"
-          echo "ODOO_DB: $ODOO_DB"
+          echo "update_simbioz: ${{inputs.update_simbioz}}"
+          echo "base_update: ${{inputs.base_update}}"
+          echo "SERVER_ADDR: ${{inputs.SERVER_ADDR}}"
+          echo "SERVER_USER: ${{inputs.SERVER_USER}}"
+          echo "MAIN_PATH: ${{inputs.MAIN_PATH}}"
+          echo "CUSTOM_PATH: ${{inputs.CUSTOM_PATH}}"
+          echo "ODOO_SERVICE: ${{inputs.ODOO_SERVICE}}"
+          echo "ODOO_USER: ${{inputs.ODOO_USER}}"
+          echo "ODOO_URI: ${{inputs.ODOO_URI}}"
+          echo "ODOO_DB: ${{inputs.ODOO_DB}}"
+      - name: Print Variables
+        run: |
+          echo "SERVER_ADDR: $SERVER_ADDR
+          echo "SERVER_USER: $SERVER_USER
+          echo "MAIN_PATH: $MAIN_PATH
+          echo "CUSTOM_PATH: $CUSTOM_PATH
+          echo "ODOO_SERVICE: $ODOO_SERVICE
+          echo "ODOO_USER: $ODOO_USER
+          echo "ODOO_URI: $ODOO_URI
+          echo "ODOO_DB: $ODOO_DB
       - name: Create SSH
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
