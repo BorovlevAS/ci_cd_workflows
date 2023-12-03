@@ -37,6 +37,19 @@ on:
         required: true
       ODOO_PASSWORD:
         required: true
+
+env:
+  SSH_KEY: ${{secrets.PREPROD_SSH_KEY}}
+  SERVER_ADDR: ${{inputs.PREPROD_SERV_ADDR}}
+  SERVER_USER: ${{inputs.PREPROD_SERV_USER}}
+  MAIN_PATH: ${{inputs.PREPROD_MAIN_PATH}}
+  CUSTOM_PATH: ${{inputs.PREPROD_CUSTOM_PATH}}
+  ODOO_SERVICE: ${{inputs.PREPROD_ODOO_SERVICE}}
+  ODOO_USER: ${{inputs.PREPROD_ODOO_USER}}
+  ODOO_PASSWORD: ${{secrets.PREPROD_ODOO_ADMIN_PWD}}
+  ODOO_URI: ${{inputs.PREPROD_ODOO_ADDR}}
+  ODOO_DB: ${{inputs.PREPROD_DB_NAME}}
+
 jobs:
   deploy:
     runs-on: ubuntu-20.04
