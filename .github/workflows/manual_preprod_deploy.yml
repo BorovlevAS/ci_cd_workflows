@@ -64,6 +64,16 @@ jobs:
       #   uses: actions/setup-python@v3
       #   with:
       #     python-version: '3.8.10'
+      - name: Print Variables
+        run: |
+          echo $SERVER_ADDR
+          echo $SERVER_USER
+          echo $MAIN_PATH
+          echo $CUSTOM_PATH
+          echo $ODOO_SERVICE
+          echo $ODOO_USER
+          echo $ODOO_URI
+          echo $ODOO_DB
       - name: Create SSH
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
