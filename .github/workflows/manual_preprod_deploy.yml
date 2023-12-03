@@ -98,6 +98,7 @@ jobs:
       - name: Update from BIKO repo - prepare
         env:
           PTH_STRING: ${{'$PTH'}}
+          RES_STRING: ${{'$RESULT'}}
         run: |
           cat <<EOF >> ~/update_script.sh
           echo "=== UPDATING BIKO REPOs ==="
@@ -107,8 +108,8 @@ jobs:
               type cd
               cd $PTH_STRING
               RESULT=$?
-              echo "RESULT: '$RESULT'"
-              if [[ $RESULT -eq 0 ]]; then
+              echo "RESULT: '$RES_STRING'"
+              if [[ $RES_STRING -eq 0 ]]; then
                 echo "Current directory: $(pwd)"
               else
                 echo "Something went wrong"
