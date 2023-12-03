@@ -54,32 +54,22 @@ jobs:
   deploy:
     runs-on: ubuntu-20.04
     steps:
-      # - name: Checkout CI/CD repo
-      #   uses: actions/checkout@v4
-      #   with:
-      #     repository: BorovlevAS/ci_cd_workflows
-      #     ref: dev
-      #     path: ci_cd_tools
-      # - name: Install Python
-      #   uses: actions/setup-python@v3
-      #   with:
-      #     python-version: '3.8.10'
-      - name: Print Variables
+      - name: Print Inputs
         run: |
-          echo $SERVER_ADDR
-          echo $SERVER_USER
-          echo $MAIN_PATH
-          echo $CUSTOM_PATH
-          echo $ODOO_SERVICE
-          echo $ODOO_USER
-          echo $ODOO_URI
-          echo $ODOO_DB
+          echo "SERVER_ADDR: $SERVER_ADDR"
+          echo "SERVER_USER: $SERVER_USER"
+          echo "MAIN_PATH: $MAIN_PATH"
+          echo "CUSTOM_PATH: $CUSTOM_PATH"
+          echo "ODOO_SERVICE: $ODOO_SERVICE"
+          echo "ODOO_USER: $ODOO_USER"
+          echo "ODOO_URI: $ODOO_URI"
+          echo "ODOO_DB: $ODOO_DB"
       - name: Create SSH
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "$SSH_KEY" > ~/.ssh/id_rsa
-          echo $SERVER_ADDR
-          ssh-keyscan -H $SERVER_ADDR > ~/.ssh/known_hosts
+          echo {{$inputs.SSH_KEY}} > ~/.ssh/id_rsa
+          echo {{$inputs.SERVER_ADDR}}
+          # ssh-keyscan -H $SERVER_ADDR > ~/.ssh/known_hosts
       #     echo "#!/bin/bash" > ~/update_script.sh
       # - name: Update from SIMBIOZ repo - prepare
       #   if: ${{inputs.update_simbioz}}
