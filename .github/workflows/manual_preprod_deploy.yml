@@ -104,7 +104,9 @@ jobs:
             for PTH in ${{inputs.CUSTOM_PATH}}
             do
               cd $PTH_STRING
-              if [[ $? -eq 0 ]]; then
+              $RESULT = $?
+              echo "RESULT: $RESULT"
+              if [[ $RESULT -eq 0 ]]; then
                 echo "Current directory: $(pwd)"
               else
                 echo "Something went wrong"
