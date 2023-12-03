@@ -43,7 +43,6 @@ jobs:
     steps:
       - name: Check variables
         run: |
-          echo ${{vars.PROD_SERV_ADDR}}
           echo "=== CHECKING INPUTS ==="
           if [[ -z "${{inputs.SERVER_ADDR}}" ]]; then
             echo "SERVER_ADDR is not set"
@@ -104,7 +103,7 @@ jobs:
           if [[ -n "${{inputs.CUSTOM_PATH}}" ]]; then
             for PTH in ${{inputs.CUSTOM_PATH}}
             do
-              echo $PTH_STRING
+              cd $PTH_STRING && git status
               # cd $PTH_STRING && git checkout dev || git checkout main && git add . && git diff-index --quiet HEAD || (git stash && git stash drop) && git reset --hard && git pull
             done
           else
