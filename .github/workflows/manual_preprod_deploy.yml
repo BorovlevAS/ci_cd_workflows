@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: BorovlevAS/ci_cd_workflows
-          ref: def
+          ref: dev
           path: ci_cd_tools
       - name: Print files
         run: |
