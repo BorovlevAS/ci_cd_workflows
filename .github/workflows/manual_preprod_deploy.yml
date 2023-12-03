@@ -80,6 +80,7 @@ jobs:
           fetch-depth: 0
           repository: BorovlevAS/ci_cd_workflows
           ref: ${{ github.ref }}
+          path: ci_cd_tools
       - name: Show files
         run: |
           ls -la
