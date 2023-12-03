@@ -48,6 +48,7 @@ jobs:
           ssh-keyscan -H ${{inputs.SERVER_ADDR}} > ~/.ssh/known_hosts 2>/dev/null
           ssh -T ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}}
           echo "#!/bin/bash" > ~/update_script.sh
+          exit 1
       - name: Update from SIMBIOZ repo - prepare
         if: ${{inputs.update_simbioz}}
         run: |
