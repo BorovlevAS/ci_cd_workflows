@@ -81,6 +81,7 @@ jobs:
           ref: 'dev'
           path: ci_cd_tools
       - name: Install Python
+        if: ${{!inputs.base_update}}
         uses: actions/setup-python@v3
         with:
           python-version: '3.8.10'
@@ -149,10 +150,12 @@ jobs:
           echo "=== UPDATING ODOO ==="
           sudo systemctl stop ${{inputs.ODOO_SERVICE}}
           cd ${{inputs.MAIN_PATH}}
+          pwd
           source venv/bin/activate
           python3 odoo-bin -c config/odoo-server.conf -d ${{inputs.ODOO_DB}} -u base --logfile= --log-level=error --stop-after-init
           deactivate
           sudo systemctl start ${{inputs.ODOO_SERVICE}}
           sudo systemctl status ${{inputs.ODOO_SERVICE}}
           EOF
+          cat ~/update_script.sh
           ssh -o ServerAliveInterval=600 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} bash < ~/update_script.sh
