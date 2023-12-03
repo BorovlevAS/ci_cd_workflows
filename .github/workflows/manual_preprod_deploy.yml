@@ -73,13 +73,13 @@ jobs:
             exit 100
           fi
           echo "=== END CHECKING INPUTS ==="
-          echo ${{ github.ref }}
+          echo ${{ github.ref_name }}
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           repository: BorovlevAS/ci_cd_workflows
-          ref: ${{ github.ref }}
+          ref: ${{ github.ref_name }}
           path: ci_cd_tools
       - name: Show files
         run: |
