@@ -43,6 +43,7 @@ jobs:
     steps:
       - name: Check variables
         run: |
+          echo ${{vars.PROD_SERV_ADDR}}
           echo "=== CHECKING INPUTS ==="
           if [[ -z "${{inputs.SERVER_ADDR}}" ]]; then
             echo "SERVER_ADDR is not set"
