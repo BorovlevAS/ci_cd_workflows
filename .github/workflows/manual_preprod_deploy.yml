@@ -78,7 +78,7 @@ jobs:
         with:
           fetch-depth: 0
           repository: BorovlevAS/ci_cd_workflows
-          ref: 'dev'
+          ref: 'main'
           path: ci_cd_tools
       - name: Install Python
         if: ${{!inputs.base_update}}
@@ -155,4 +155,4 @@ jobs:
           sudo systemctl status ${{inputs.ODOO_SERVICE}}
           EOF
           cat ~/update_script.sh
-          ssh -o TCPKeepAlive=yes -o ServerAliveCountMax=30 -o ServerAliveInterval=60 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} bash < ~/update_script.sh
+          ssh -o TCPKeepAlive=yes -o ServerAliveCountMax=100 -o ServerAliveInterval=60 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} bash < ~/update_script.sh
