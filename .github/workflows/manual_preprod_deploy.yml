@@ -54,12 +54,16 @@ jobs:
           echo "ODOO_USER: ${{inputs.ODOO_USER}}"
           echo "ODOO_URI: ${{inputs.ODOO_URI}}"
           echo "ODOO_DB: ${{inputs.ODOO_DB}}"
-      - name: Checkout
+      - name: Checkout CI/CD repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          repository: BorovlevAS/ci_cd_workflows
+          ref: def
+          path: ci_cd_tools
       - name: Print files
-        run: ls -la
+        run: |
+          echo "=== FILES ==="
+          ls -la
       # - name: Create SSH
       #   run: |
       #     install -m 600 -D /dev/null ~/.ssh/id_rsa
