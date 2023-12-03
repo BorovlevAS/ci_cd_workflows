@@ -103,6 +103,7 @@ jobs:
           if [[ -n "${{inputs.CUSTOM_PATH}}" ]]; then
             for PTH in ${{inputs.CUSTOM_PATH}}
             do
+              type cd
               cd $PTH_STRING
               $RESULT = $?
               echo "RESULT: $RESULT"
