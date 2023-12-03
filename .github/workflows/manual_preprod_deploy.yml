@@ -59,6 +59,7 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{inputs.SERVER_ADDR}} > ~/.ssh/known_hosts
+          ssh -o ServerAliveInterval=600 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} "whoami"
       #     echo "#!/bin/bash" > ~/update_script.sh
       # - name: Update from SIMBIOZ repo - prepare
       #   if: ${{inputs.update_simbioz}}
