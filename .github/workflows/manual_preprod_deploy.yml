@@ -107,10 +107,15 @@ jobs:
               if [[ -d "$PTH_STRING" ]]; then
                 cd "$PTH_STRING"
                 echo "Current directory: $(pwd)"
+                git checkout dev
+                if [[ $? -eq 0 ]]; then
+                  git add . && git diff-index --quiet HEAD || (git stash && git stash drop)
+                  git reset --hard
+                  git pull
+                fi
               else
                 echo "No folder $PTH_STRING"
               fi
-              # cd $PTH_STRING && (echo checkout && (git checkout dev || git checkout main)) && git add . && git diff-index --quiet HEAD || (git stash && git stash drop) && git reset --hard && git pull
             done
           else
             echo "NO CUSTOM FOLDERS SPECIFIED"
