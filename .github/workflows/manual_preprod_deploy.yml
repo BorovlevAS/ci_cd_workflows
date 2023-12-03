@@ -150,7 +150,11 @@ jobs:
           echo "=== UPDATING ODOO ==="
           sudo systemctl stop ${{inputs.ODOO_SERVICE}}
           cd ${{inputs.MAIN_PATH}}
-          ${{inputs.MAIN_PATH}}/venv/bin/python3 ${{inputs.MAIN_PATH}}/odoo-bin -c ${{inputs.MAIN_PATH}}/config/odoo-server.conf -d ${{inputs.ODOO_DB}} -u base --logfile= --log-level=error --stop-after-init
+          # ${{inputs.MAIN_PATH}}/venv/bin/python3 ${{inputs.MAIN_PATH}}/odoo-bin -c ${{inputs.MAIN_PATH}}/config/odoo-server.conf -d ${{inputs.ODOO_DB}} -u base --logfile= --log-level=error --stop-after-init
+          source ven/bin/activate
+          python3 odoo-bin -c config/odoo-server.conf -d ${{inputs.ODOO_DB}} -u base --logfile= --log-level=error --stop-after-init
+          echo "RESULT = $?"
+          deactivate
           sudo systemctl start ${{inputs.ODOO_SERVICE}}
           sudo systemctl status ${{inputs.ODOO_SERVICE}}
           EOF
