@@ -39,7 +39,7 @@ on:
         required: true
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout CI/CD repo
         uses: actions/checkout@v4
