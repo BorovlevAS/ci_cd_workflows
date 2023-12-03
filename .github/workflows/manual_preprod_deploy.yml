@@ -73,18 +73,15 @@ jobs:
             exit 100
           fi
           echo "=== END CHECKING INPUTS ==="
-          echo ${{ github.ref_name }}
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           repository: BorovlevAS/ci_cd_workflows
-          ref: ${{ github.ref_name }}
+          ref: 'dev'
           path: ci_cd_tools
       - name: Show files
-        run: |
-          cd ci_cd_tools
-          ls -la
+        run: ls -la ci_cd_tools
       # - name: Create SSH
       #   run: |
       #     install -m 600 -D /dev/null ~/.ssh/id_rsa
