@@ -45,12 +45,8 @@ jobs:
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{inputs.SERVER_ADDR}} > ~/.ssh/known_hosts
-          echo "=== START SSH TEST ==="
-          cat ~/.ssh/id_rsa
-          cat ~/.ssh/known_hosts
-          ssh -o ServerAliveInterval=600 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} 'whoami && ifconfig && pwd && cat /etc/passwd'
-          echo "=== END SSH TEST ==="
+          ssh-keyscan -H ${{inputs.SERVER_ADDR}} > ~/.ssh/known_hosts 2>/dev/null
+          ssh -T ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}}
           echo "#!/bin/bash" > ~/update_script.sh
       - name: Update from SIMBIOZ repo - prepare
         if: ${{inputs.update_simbioz}}
@@ -71,15 +67,14 @@ jobs:
         run: |
           cat <<EOF >> ~/update_script.sh
           echo "=== UPDATING BIKO REPOs ==="
-          for PTH in ${{inputs.CUSTOM_PATH}}
-          do
-            cd $PTH_STRING
-            pwd
-            git checkout dev || git checkout main
-            git add . && git diff-index --quiet HEAD || (git stash && git stash drop)
-            git reset --hard
-            git pull
-          done
+          if [[ -n "${{inputs.CUSTOM_PATH}}" ]]; then
+            for PTH in ${{inputs.CUSTOM_PATH}}
+            do
+              cd $PTH_STRING && git checkout dev || git checkout main && git add . && git diff-index --quiet HEAD || (git stash && git stash drop) && git reset --hard && git pull
+            done
+          else
+            echo "NO CUSTOM FOLDERS SPECIFIED"
+          fi
           EOF
       - name: Soft update (only changes)
         if: ${{!inputs.base_update}}
