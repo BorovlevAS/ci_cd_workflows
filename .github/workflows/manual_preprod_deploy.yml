@@ -98,21 +98,17 @@ jobs:
       - name: Update from BIKO repo - prepare
         env:
           PTH_STRING: ${{'$PTH'}}
-          RES_STRING: ${{'$RESULT'}}
         run: |
           cat <<EOF >> ~/update_script.sh
           echo "=== UPDATING BIKO REPOs ==="
           if [[ -n "${{inputs.CUSTOM_PATH}}" ]]; then
             for PTH in ${{inputs.CUSTOM_PATH}}
             do
-              type cd
-              cd $PTH_STRING
-              RESULT=$?
-              echo "RESULT: '$RES_STRING'"
-              if [[ $RES_STRING -eq 0 ]]; then
+              if [[ -d "$PTH_STRING" ]]; then
+                cd "$PTH_STRING"
                 echo "Current directory: $(pwd)"
               else
-                echo "Something went wrong"
+                echo "No folder $PTH_STRING"
               fi
               # cd $PTH_STRING && (echo checkout && (git checkout dev || git checkout main)) && git add . && git diff-index --quiet HEAD || (git stash && git stash drop) && git reset --hard && git pull
             done
