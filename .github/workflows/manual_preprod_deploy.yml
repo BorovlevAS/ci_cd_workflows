@@ -55,7 +55,7 @@ jobs:
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "$SSH_KEY" > ~/.ssh/id_rsa
-          # ssh-keyscan -H $SERVER_ADDR > ~/.ssh/known_hosts 2> /dev/null
+          ssh-keyscan -H $SERVER_ADDR > ~/.ssh/known_hosts 2> /dev/null
       #     echo "#!/bin/bash" > ~/update_script.sh
       # - name: Update from SIMBIOZ repo - prepare
       #   if: ${{inputs.update_simbioz}}
