@@ -41,7 +41,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Test step
+      - name: print inputs
         run: |
           echo "=== TEST ==="
           echo "update_simbioz: ${{inputs.update_simbioz}}"
@@ -54,9 +54,12 @@ jobs:
           echo "ODOO_USER: ${{inputs.ODOO_USER}}"
           echo "ODOO_URI: ${{inputs.ODOO_URI}}"
           echo "ODOO_DB: ${{inputs.ODOO_DB}}"
-          echo "SSH_KEY: ${{secrets.SSH_KEY}}"
-          echo "ODOO_PASSWORD: ${{secrets.ODOO_PASSWORD}}"
-
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Print files
+        run: ls -la
       # - name: Create SSH
       #   run: |
       #     install -m 600 -D /dev/null ~/.ssh/id_rsa
