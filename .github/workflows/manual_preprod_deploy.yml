@@ -45,8 +45,10 @@ jobs:
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{inputs.SERVER_ADDR}} > ~/.ssh/known_hosts 2 > /dev/null
+          ssh-keyscan -H ${{inputs.SERVER_ADDR}} > ~/.ssh/known_hosts
           echo "=== START SSH TEST ==="
+          cat ~/.ssh/id_rsa
+          cat ~/.ssh/known_hosts
           ssh -o ServerAliveInterval=600 ${{inputs.SERVER_USER}}@${{inputs.SERVER_ADDR}} 'whoami && ifconfig && pwd && cat /etc/passwd'
           echo "=== END SSH TEST ==="
           echo "#!/bin/bash" > ~/update_script.sh
