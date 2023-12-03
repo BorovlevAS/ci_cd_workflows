@@ -26,9 +26,6 @@ on:
       ODOO_USER:
         required: true
         type: string
-      ODOO_PASSWORD:
-        required: true
-        type: string
       ODOO_URI:
         required: true
         type: string
