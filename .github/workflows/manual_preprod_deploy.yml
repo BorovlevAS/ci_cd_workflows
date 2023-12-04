@@ -112,11 +112,11 @@ jobs:
           cat <<EOF >> ~/update_script.sh
           echo "=== UPDATING BIKO REPOs ==="
           if [[ -n "${{inputs.CUSTOM_PATH}}" ]]; then
-            for PTH in ${{inputs.CUSTOM_PATH}}
+            for PTH in {${{inputs.CUSTOM_PATH}}}
             do
               if [[ -d "$PTH_STRING" ]]; then
                 cd "$PTH_STRING"
-                echo "Current directory: $(pwd)"
+                echo "Current directory: =====" && pwd
                 git checkout dev
                 if [[ $? -eq 0 ]]; then
                   git add . && git diff-index --quiet HEAD || (git stash && git stash drop)
