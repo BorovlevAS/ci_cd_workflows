@@ -120,7 +120,7 @@ jobs:
               if [[ -d "$PTH_STRING" ]]; then
                 cd "$PTH_STRING"
                 echo "Current directory: " && pwd
-                git checkout dev
+                git checkout main || git checkout master
                 if [[ $? -eq 0 ]]; then
                   git add . && git diff-index --quiet HEAD || (git stash && git stash drop)
                   git reset --hard
