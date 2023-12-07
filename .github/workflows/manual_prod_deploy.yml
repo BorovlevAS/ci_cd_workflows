@@ -1,4 +1,4 @@
-name: Manual preprod deploy
+name: Manual PROD deploy
 on:
   workflow_call:
     inputs:
