@@ -82,7 +82,7 @@ jobs:
           path: ci_cd_tools
       - name: Install Python
         if: ${{!inputs.base_update}}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: '3.8.10'
       - name: Create SSH
